@@ -1,0 +1,1382 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>KREASI.CO — Jasa Kreatif Digital</title>
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet" />
+
+  <style type="text/tailwindcss">
+    @theme {
+      --font-display: 'Syne', sans-serif;
+      --font-body: 'DM Sans', sans-serif;
+      --color-accent: #2563EB;
+      --color-accent-light: #DBEAFE;
+      --color-accent-dark: #1D4ED8;
+      --color-violet: #7C3AED;
+      --color-ink: #09090B;
+      --color-muted: #71717A;
+      --color-surface: #FAFAFA;
+      --color-border: #E4E4E7;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      font-family: var(--font-body);
+      background: #FFFFFF;
+      color: var(--color-ink);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    h1, h2, h3, h4, .font-display {
+      font-family: var(--font-display);
+    }
+
+    /* ===== SCROLLBAR ===== */
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: #f1f1f1; }
+    ::-webkit-scrollbar-thumb { background: #2563EB; border-radius: 99px; }
+
+    /* ===== NOISE TEXTURE ===== */
+    .noise-bg::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ===== HERO MARQUEE ===== */
+    .marquee-track {
+      display: flex;
+      width: max-content;
+      animation: marquee 22s linear infinite;
+    }
+    @keyframes marquee {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+
+    /* ===== TAB ACTIVE STATE ===== */
+    .tab-btn.active {
+      background: var(--color-accent);
+      color: #fff;
+      border-color: var(--color-accent);
+    }
+
+    /* ===== PORTFOLIO CARD HOVER ===== */
+    .porto-card { transition: transform 0.3s cubic-bezier(.22,1,.36,1), box-shadow 0.3s; }
+    .porto-card:hover { transform: translateY(-6px); box-shadow: 0 20px 48px -12px rgba(37,99,235,0.18); }
+
+    /* ===== FAQ ACCORDION ===== */
+    .faq-body {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.38s cubic-bezier(.22,1,.36,1), padding 0.28s;
+    }
+    .faq-body.open { max-height: 320px; padding-bottom: 1rem; }
+    .faq-icon { transition: transform 0.3s; }
+    .faq-item.open .faq-icon { transform: rotate(45deg); }
+
+    /* ===== PACKAGE CARD ===== */
+    .pkg-card { transition: transform 0.28s cubic-bezier(.22,1,.36,1), box-shadow 0.28s; }
+    .pkg-card:hover { transform: translateY(-4px); box-shadow: 0 16px 40px -10px rgba(37,99,235,0.15); }
+    .pkg-card.popular { border: 2px solid var(--color-accent); position: relative; }
+
+    /* ===== TESTIMONIAL CARD ===== */
+    .testi-slider { scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; }
+    .testi-card { scroll-snap-align: start; flex: 0 0 calc(100% - 2rem); }
+    @media (min-width: 768px) { .testi-card { flex: 0 0 calc(50% - 1rem); } }
+    @media (min-width: 1024px) { .testi-card { flex: 0 0 calc(33.333% - 1rem); } }
+
+    /* ===== BOTTOM CTA BAR ===== */
+    #bottom-cta { transition: transform 0.4s cubic-bezier(.22,1,.36,1), opacity 0.3s; }
+    #bottom-cta.hidden-bar { transform: translateY(110%); opacity: 0; pointer-events: none; }
+
+    /* ===== SLOT PULSE ===== */
+    @keyframes pulseDot {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.35; }
+    }
+    .pulse-dot { animation: pulseDot 1.6s ease-in-out infinite; }
+
+    /* ===== COUNTDOWN ===== */
+    .countdown-digit {
+      font-family: var(--font-display);
+      font-weight: 800;
+      letter-spacing: -0.04em;
+    }
+
+    /* ===== MODAL ===== */
+    #intake-modal { transition: opacity 0.28s, visibility 0.28s; }
+    #intake-modal.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+    #modal-box { transition: transform 0.32s cubic-bezier(.22,1,.36,1); }
+    #intake-modal.hidden #modal-box { transform: translateY(40px) scale(0.97); }
+
+    /* ===== AVATAR STAGGER ===== */
+    .avatar-stack > img:nth-child(1) { z-index: 5; }
+    .avatar-stack > img:nth-child(2) { z-index: 4; margin-left: -12px; }
+    .avatar-stack > img:nth-child(3) { z-index: 3; margin-left: -12px; }
+
+    /* ===== SECTION FADE IN ===== */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .fade-in.visible {
+      opacity: 1;
+      transform: none;
+    }
+  </style>
+</head>
+
+<body class="overflow-x-hidden">
+
+  <!-- ============================================================
+       NAVIGATION
+  ============================================================ -->
+  <header id="navbar" class="fixed top-0 left-0 right-0 z-50 border-b border-zinc-100 bg-white/90 backdrop-blur-md" role="banner">
+    <nav class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between" aria-label="Navigasi utama">
+      <!-- Logo -->
+      <a href="#hero" class="font-display font-800 text-xl tracking-tight text-zinc-950 focus-visible:outline-2 focus-visible:outline-accent">
+        KREASI<span class="text-accent">.CO</span>
+      </a>
+
+      <!-- Desktop Nav -->
+      <ul class="hidden md:flex items-center gap-8 text-sm font-medium text-zinc-600" role="list">
+        <li><a href="#portfolio" class="hover:text-zinc-950 transition-colors focus-visible:outline-2 focus-visible:outline-accent">Portfolio</a></li>
+        <li><a href="#services" class="hover:text-zinc-950 transition-colors focus-visible:outline-2 focus-visible:outline-accent">Layanan</a></li>
+        <li><a href="#pricing" class="hover:text-zinc-950 transition-colors focus-visible:outline-2 focus-visible:outline-accent">Harga</a></li>
+        <li><a href="#testimonials" class="hover:text-zinc-950 transition-colors focus-visible:outline-2 focus-visible:outline-accent">Ulasan</a></li>
+        <li><a href="#faq" class="hover:text-zinc-950 transition-colors focus-visible:outline-2 focus-visible:outline-accent">FAQ</a></li>
+      </ul>
+
+      <!-- CTA Desktop -->
+      <a href="#contact"
+         class="hidden md:inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-accent text-white text-sm font-medium hover:bg-accent-dark transition-colors focus-visible:ring-2 focus-visible:ring-accent focus:outline-none"
+         aria-label="Mulai order jasa kreatif">
+        <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
+          <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/>
+        </svg>
+        Order Sekarang
+      </a>
+
+      <!-- Hamburger Mobile -->
+      <button id="menu-btn" aria-label="Buka menu navigasi" aria-expanded="false" aria-controls="mobile-menu"
+              class="md:hidden p-2 rounded-lg hover:bg-zinc-100 focus-visible:ring-2 focus-visible:ring-accent focus:outline-none">
+        <svg id="icon-open" width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+        </svg>
+        <svg id="icon-close" class="hidden" width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+      </button>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="hidden md:hidden border-t border-zinc-100 bg-white" role="menu" aria-label="Menu mobile">
+      <ul class="px-4 py-4 space-y-1 text-sm font-medium text-zinc-700" role="list">
+        <li><a href="#portfolio" class="block px-3 py-2.5 rounded-lg hover:bg-zinc-50 focus-visible:ring-2 focus-visible:ring-accent focus:outline-none" role="menuitem">Portfolio</a></li>
+        <li><a href="#services" class="block px-3 py-2.5 rounded-lg hover:bg-zinc-50 focus-visible:ring-2 focus-visible:ring-accent focus:outline-none" role="menuitem">Layanan</a></li>
+        <li><a href="#pricing" class="block px-3 py-2.5 rounded-lg hover:bg-zinc-50 focus-visible:ring-2 focus-visible:ring-accent focus:outline-none" role="menuitem">Harga</a></li>
+        <li><a href="#testimonials" class="block px-3 py-2.5 rounded-lg hover:bg-zinc-50 focus-visible:ring-2 focus-visible:ring-accent focus:outline-none" role="menuitem">Ulasan</a></li>
+        <li><a href="#faq" class="block px-3 py-2.5 rounded-lg hover:bg-zinc-50 focus-visible:ring-2 focus-visible:ring-accent focus:outline-none" role="menuitem">FAQ</a></li>
+        <li>
+          <a href="#contact" class="block mt-2 px-3 py-2.5 rounded-full bg-accent text-white text-center font-medium focus-visible:ring-2 focus-visible:ring-accent focus:outline-none" role="menuitem">
+            Order Sekarang
+          </a>
+        </li>
+      </ul>
+    </div>
+  </header>
+
+  <!-- ============================================================
+       HERO SECTION
+  ============================================================ -->
+  <section id="hero" class="relative pt-28 pb-16 sm:pt-36 sm:pb-24 bg-white overflow-hidden noise-bg" aria-labelledby="hero-headline">
+    <!-- Background accent blob -->
+    <div class="absolute -top-20 -right-20 w-96 h-96 rounded-full bg-accent/6 blur-3xl pointer-events-none" aria-hidden="true"></div>
+    <div class="absolute -bottom-10 -left-10 w-64 h-64 rounded-full bg-violet/5 blur-3xl pointer-events-none" aria-hidden="true"></div>
+
+    <div class="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+
+        <!-- Copy -->
+        <div>
+          <!-- Badge -->
+          <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-accent/25 bg-accent/6 text-accent text-xs font-medium mb-6" role="status">
+            <span class="pulse-dot w-1.5 h-1.5 rounded-full bg-accent inline-block" aria-hidden="true"></span>
+            <span id="slot-badge">Tersisa <strong id="slot-count">4</strong> Slot Desember 2024</span>
+          </div>
+
+          <h1 id="hero-headline" class="font-display font-800 text-4xl sm:text-5xl lg:text-6xl leading-[1.05] tracking-tight text-zinc-950 mb-6">
+            Visual yang<br />
+            <span class="text-accent">Nempel</span> di<br />
+            Kepala Audiens
+          </h1>
+
+          <p class="text-zinc-500 text-base sm:text-lg leading-relaxed max-w-lg mb-8">
+            Jasa desain grafis, edit video TikTok, dan manajemen sosmed untuk brand lokal yang mau tampil beda. <strong class="text-zinc-700">Response cepat, revisi fleksibel.</strong>
+          </p>
+
+          <!-- CTA Group -->
+          <div class="flex flex-col sm:flex-row gap-3 mb-10">
+            <a href="#contact"
+               class="inline-flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-full bg-accent text-white font-medium hover:bg-accent-dark transition-colors focus-visible:ring-2 focus-visible:ring-accent focus:outline-none"
+               aria-label="Konsultasi gratis via WhatsApp">
+              <!-- WhatsApp Icon -->
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+              </svg>
+              Konsultasi Gratis
+            </a>
+            <a href="#portfolio"
+               class="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full border border-zinc-200 text-zinc-700 font-medium hover:border-zinc-400 hover:bg-zinc-50 transition-colors focus-visible:ring-2 focus-visible:ring-accent focus:outline-none">
+              Lihat Portfolio
+              <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
+                <path d="M5 12h14M12 5l7 7-7 7"/>
+              </svg>
+            </a>
+          </div>
+
+          <!-- Social Proof -->
+          <div class="flex items-center gap-4">
+            <div class="avatar-stack flex items-center" aria-hidden="true">
+              <img src="https://api.dicebear.com/7.x/notionists/svg?seed=ayu&backgroundColor=b6e3f4" alt="" class="w-9 h-9 rounded-full border-2 border-white object-cover bg-zinc-100" />
+              <img src="https://api.dicebear.com/7.x/notionists/svg?seed=bima&backgroundColor=ffdfbf" alt="" class="w-9 h-9 rounded-full border-2 border-white object-cover bg-zinc-100" />
+              <img src="https://api.dicebear.com/7.x/notionists/svg?seed=citra&backgroundColor=c0aede" alt="" class="w-9 h-9 rounded-full border-2 border-white object-cover bg-zinc-100" />
+            </div>
+            <div>
+              <div class="flex items-center gap-1" role="img" aria-label="Rating 5 dari 5 bintang">
+                <svg class="text-amber-400 w-4 h-4" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                <svg class="text-amber-400 w-4 h-4" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                <svg class="text-amber-400 w-4 h-4" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                <svg class="text-amber-400 w-4 h-4" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                <svg class="text-amber-400 w-4 h-4" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+              </div>
+              <p class="text-xs text-zinc-500 mt-0.5"><strong class="text-zinc-700">140+ klien puas</strong> · rata-rata 4.9/5</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Profile Visual -->
+        <div class="relative flex justify-center lg:justify-end">
+          <div class="relative w-72 sm:w-80 lg:w-96">
+            <!-- Profile Card -->
+            <div class="bg-zinc-50 border border-zinc-100 rounded-3xl p-6 shadow-xl shadow-zinc-100">
+              <div class="flex items-center gap-4 mb-5">
+                <div class="w-16 h-16 rounded-2xl bg-accent/10 flex items-center justify-center overflow-hidden">
+                  <img src="https://api.dicebear.com/7.x/notionists/svg?seed=rani&backgroundColor=dbeafe" alt="Foto profil kreator" class="w-full h-full object-cover" />
+                </div>
+                <div>
+                  <p class="font-display font-700 text-zinc-900 text-lg leading-tight">Hana Ramadhani</p>
+                  <p class="text-zinc-500 text-sm">Creative Director & Visual Storyteller</p>
+                  <div class="flex items-center gap-1.5 mt-1">
+                    <span class="w-2 h-2 rounded-full bg-emerald-500 pulse-dot" aria-hidden="true"></span>
+                    <span class="text-xs text-emerald-600 font-medium">Aktif sekarang</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Skill Tags -->
+              <div class="flex flex-wrap gap-2 mb-5" role="list" aria-label="Keahlian">
+                <span class="px-2.5 py-1 rounded-full text-xs font-medium bg-accent/10 text-accent border border-accent/20" role="listitem">Desain Grafis</span>
+                <span class="px-2.5 py-1 rounded-full text-xs font-medium bg-violet/10 text-violet border border-violet/20" role="listitem">Edit Video</span>
+                <span class="px-2.5 py-1 rounded-full text-xs font-medium bg-emerald-50 text-emerald-700 border border-emerald-200" role="listitem">Sosmed Manager</span>
+                <span class="px-2.5 py-1 rounded-full text-xs font-medium bg-amber-50 text-amber-700 border border-amber-200" role="listitem">Fotografi</span>
+              </div>
+
+              <!-- Stats Row -->
+              <div class="grid grid-cols-3 gap-3">
+                <div class="bg-white rounded-xl p-3 text-center border border-zinc-100">
+                  <p class="font-display font-800 text-zinc-900 text-xl">140+</p>
+                  <p class="text-zinc-500 text-[11px] leading-tight">Proyek Selesai</p>
+                </div>
+                <div class="bg-white rounded-xl p-3 text-center border border-zinc-100">
+                  <p class="font-display font-800 text-zinc-900 text-xl">3 th</p>
+                  <p class="text-zinc-500 text-[11px] leading-tight">Pengalaman</p>
+                </div>
+                <div class="bg-white rounded-xl p-3 text-center border border-zinc-100">
+                  <p class="font-display font-800 text-zinc-900 text-xl">98%</p>
+                  <p class="text-zinc-500 text-[11px] leading-tight">Happy Client</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Floating badge -->
+            <div class="absolute -bottom-4 -left-4 bg-white rounded-2xl border border-zinc-100 shadow-lg px-4 py-3 flex items-center gap-2.5" aria-hidden="true">
+              <div class="w-8 h-8 rounded-xl bg-amber-50 flex items-center justify-center">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="#F59E0B" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              </div>
+              <div>
+                <p class="text-xs font-semibold text-zinc-800">Top Rated</p>
+                <p class="text-[11px] text-zinc-500">Verified Creator</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       MARQUEE STRIP
+  ============================================================ -->
+  <div class="border-y border-zinc-100 bg-zinc-50 py-3.5 overflow-hidden" aria-hidden="true">
+    <div class="marquee-track">
+      <div class="flex items-center gap-8 px-4 whitespace-nowrap text-sm text-zinc-400 font-medium">
+        <span class="flex items-center gap-2"><svg width="14" height="14" viewBox="0 0 24 24" fill="#2563EB"><circle cx="12" cy="12" r="10"/></svg>Desain Feed Instagram</span>
+        <span class="text-zinc-200">·</span>
+        <span class="flex items-center gap-2"><svg width="14" height="14" viewBox="0 0 24 24" fill="#7C3AED"><circle cx="12" cy="12" r="10"/></svg>Edit Video TikTok</span>
+        <span class="text-zinc-200">·</span>
+        <span class="flex items-center gap-2"><svg width="14" height="14" viewBox="0 0 24 24" fill="#059669"><circle cx="12" cy="12" r="10"/></svg>Manajemen Sosmed</span>
+        <span class="text-zinc-200">·</span>
+        <span class="flex items-center gap-2"><svg width="14" height="14" viewBox="0 0 24 24" fill="#D97706"><circle cx="12" cy="12" r="10"/></svg>Fotografi Produk</span>
+        <span class="text-zinc-200">·</span>
+        <span class="flex items-center gap-2"><svg width="14" height="14" viewBox="0 0 24 24" fill="#2563EB"><circle cx="12" cy="12" r="10"/></svg>Logo & Branding</span>
+        <span class="text-zinc-200">·</span>
+        <span class="flex items-center gap-2"><svg width="14" height="14" viewBox="0 0 24 24" fill="#7C3AED"><circle cx="12" cy="12" r="10"/></svg>Konten Reels</span>
+        <span class="text-zinc-200">·</span>
+        <span class="flex items-center gap-2"><svg width="14" height="14" viewBox="0 0 24 24" fill="#059669"><circle cx="12" cy="12" r="10"/></svg>Thumbnail YouTube</span>
+        <span class="text-zinc-200">·</span>
+        <span class="flex items-center gap-2"><svg width="14" height="14" viewBox="0 0 24 24" fill="#D97706"><circle cx="12" cy="12" r="10"/></svg>Poster Promosi</span>
+        <span class="text-zinc-200">·</span>
+      </div>
+      <!-- Duplicate for seamless loop -->
+      <div class="flex items-center gap-8 px-4 whitespace-nowrap text-sm text-zinc-400 font-medium" aria-hidden="true">
+        <span class="flex items-center gap-2"><svg width="14" height="14" viewBox="0 0 24 24" fill="#2563EB"><circle cx="12" cy="12" r="10"/></svg>Desain Feed Instagram</span>
+        <span class="text-zinc-200">·</span>
+        <span class="flex items-center gap-2"><svg width="14" height="14" viewBox="0 0 24 24" fill="#7C3AED"><circle cx="12" cy="12" r="10"/></svg>Edit Video TikTok</span>
+        <span class="text-zinc-200">·</span>
+        <span class="flex items-center gap-2"><svg width="14" height="14" viewBox="0 0 24 24" fill="#059669"><circle cx="12" cy="12" r="10"/></svg>Manajemen Sosmed</span>
+        <span class="text-zinc-200">·</span>
+        <span class="flex items-center gap-2"><svg width="14" height="14" viewBox="0 0 24 24" fill="#D97706"><circle cx="12" cy="12" r="10"/></svg>Fotografi Produk</span>
+        <span class="text-zinc-200">·</span>
+        <span class="flex items-center gap-2"><svg width="14" height="14" viewBox="0 0 24 24" fill="#2563EB"><circle cx="12" cy="12" r="10"/></svg>Logo & Branding</span>
+        <span class="text-zinc-200">·</span>
+        <span class="flex items-center gap-2"><svg width="14" height="14" viewBox="0 0 24 24" fill="#7C3AED"><circle cx="12" cy="12" r="10"/></svg>Konten Reels</span>
+        <span class="text-zinc-200">·</span>
+        <span class="flex items-center gap-2"><svg width="14" height="14" viewBox="0 0 24 24" fill="#059669"><circle cx="12" cy="12" r="10"/></svg>Thumbnail YouTube</span>
+        <span class="text-zinc-200">·</span>
+        <span class="flex items-center gap-2"><svg width="14" height="14" viewBox="0 0 24 24" fill="#D97706"><circle cx="12" cy="12" r="10"/></svg>Poster Promosi</span>
+        <span class="text-zinc-200">·</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       URGENCY — PROMO COUNTDOWN
+  ============================================================ -->
+  <section class="bg-accent py-4 px-4" aria-label="Promosi terbatas" aria-live="polite" aria-atomic="true">
+    <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-center gap-3 text-white text-sm text-center">
+      <div class="flex items-center gap-2">
+        <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M12 2v10l4 2"/><circle cx="12" cy="12" r="10"/></svg>
+        <span class="font-medium">Promo Early Bird berakhir dalam:</span>
+      </div>
+      <div class="flex items-center gap-2 font-display font-800 text-lg" role="timer" aria-label="Hitung mundur promo">
+        <div class="bg-white/20 rounded-lg w-10 h-9 flex items-center justify-center">
+          <span id="cd-hours" class="countdown-digit">08</span>
+        </div>
+        <span class="opacity-70">:</span>
+        <div class="bg-white/20 rounded-lg w-10 h-9 flex items-center justify-center">
+          <span id="cd-mins" class="countdown-digit">24</span>
+        </div>
+        <span class="opacity-70">:</span>
+        <div class="bg-white/20 rounded-lg w-10 h-9 flex items-center justify-center">
+          <span id="cd-secs" class="countdown-digit">00</span>
+        </div>
+      </div>
+      <span class="font-medium bg-white/20 px-3 py-1 rounded-full text-xs">Hemat hingga 35%</span>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       PORTFOLIO SECTION
+  ============================================================ -->
+  <section id="portfolio" class="py-20 sm:py-28 bg-white" aria-labelledby="portfolio-heading">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <!-- Header -->
+      <div class="text-center mb-12 fade-in">
+        <p class="text-accent text-sm font-medium tracking-wide uppercase mb-3">Portfolio Karya</p>
+        <h2 id="portfolio-heading" class="font-display font-800 text-3xl sm:text-4xl lg:text-5xl text-zinc-950 tracking-tight mb-4">
+          Hasil Nyata,<br class="hidden sm:block" /> Bukan Janji
+        </h2>
+        <p class="text-zinc-500 text-base max-w-xl mx-auto">Pilih kategori dan lihat langsung hasil kerja yang sudah dipercaya puluhan brand lokal.</p>
+      </div>
+
+      <!-- Tab Switcher -->
+      <div class="flex items-center justify-center gap-2 flex-wrap mb-10 fade-in" role="tablist" aria-label="Kategori portfolio">
+        <button class="tab-btn active px-4 py-2 rounded-full border border-zinc-200 text-sm font-medium text-zinc-600 hover:border-accent hover:text-accent transition-colors focus-visible:ring-2 focus-visible:ring-accent focus:outline-none" data-tab="semua" role="tab" aria-selected="true" aria-controls="porto-grid">Semua</button>
+        <button class="tab-btn px-4 py-2 rounded-full border border-zinc-200 text-sm font-medium text-zinc-600 hover:border-accent hover:text-accent transition-colors focus-visible:ring-2 focus-visible:ring-accent focus:outline-none" data-tab="desain" role="tab" aria-selected="false" aria-controls="porto-grid">Desain</button>
+        <button class="tab-btn px-4 py-2 rounded-full border border-zinc-200 text-sm font-medium text-zinc-600 hover:border-accent hover:text-accent transition-colors focus-visible:ring-2 focus-visible:ring-accent focus:outline-none" data-tab="video" role="tab" aria-selected="false" aria-controls="porto-grid">Video</button>
+        <button class="tab-btn px-4 py-2 rounded-full border border-zinc-200 text-sm font-medium text-zinc-600 hover:border-accent hover:text-accent transition-colors focus-visible:ring-2 focus-visible:ring-accent focus:outline-none" data-tab="foto" role="tab" aria-selected="false" aria-controls="porto-grid">Foto</button>
+        <button class="tab-btn px-4 py-2 rounded-full border border-zinc-200 text-sm font-medium text-zinc-600 hover:border-accent hover:text-accent transition-colors focus-visible:ring-2 focus-visible:ring-accent focus:outline-none" data-tab="sosmed" role="tab" aria-selected="false" aria-controls="porto-grid">Sosmed</button>
+      </div>
+
+      <!-- Portfolio Grid -->
+      <div id="porto-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" role="tabpanel" aria-label="Karya portfolio">
+
+        <article class="porto-card rounded-2xl overflow-hidden border border-zinc-100 bg-white shadow-sm cursor-pointer group" data-category="desain" tabindex="0" aria-label="Rebrand KopiKita - Desain">
+          <div class="aspect-video bg-gradient-to-br from-accent/15 to-violet/10 flex items-center justify-center relative overflow-hidden">
+            <div class="absolute inset-0 flex items-center justify-center">
+              <div class="w-24 h-24 rounded-2xl bg-accent/20 flex items-center justify-center">
+                <svg width="40" height="40" fill="none" viewBox="0 0 24 24" stroke="#2563EB" stroke-width="1.5" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></svg>
+              </div>
+            </div>
+            <div class="absolute top-3 left-3">
+              <span class="px-2.5 py-1 rounded-full text-[11px] font-medium bg-white/80 text-accent backdrop-blur-sm">Desain</span>
+            </div>
+            <div class="absolute inset-0 bg-zinc-950/0 group-hover:bg-zinc-950/10 transition-colors"></div>
+          </div>
+          <div class="p-4">
+            <h3 class="font-display font-700 text-zinc-900 text-base mb-1">Rebrand KopiKita</h3>
+            <p class="text-zinc-500 text-sm">Logo, brand guideline & packaging design untuk brand kopi lokal asal Bandung.</p>
+          </div>
+        </article>
+
+        <article class="porto-card rounded-2xl overflow-hidden border border-zinc-100 bg-white shadow-sm cursor-pointer group" data-category="video" tabindex="0" aria-label="Viral TikTok CamilanNusantara - Video">
+          <div class="aspect-video bg-gradient-to-br from-pink-50 to-rose-100 flex items-center justify-center relative overflow-hidden">
+            <div class="w-24 h-24 rounded-full bg-white/60 flex items-center justify-center backdrop-blur-sm">
+              <svg width="36" height="36" fill="none" viewBox="0 0 24 24" stroke="#E11D48" stroke-width="1.5" aria-hidden="true"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            </div>
+            <div class="absolute top-3 left-3">
+              <span class="px-2.5 py-1 rounded-full text-[11px] font-medium bg-white/80 text-rose-600 backdrop-blur-sm">Video</span>
+            </div>
+            <div class="absolute bottom-3 right-3 bg-white/80 backdrop-blur-sm px-2 py-1 rounded-lg text-[11px] font-medium text-zinc-700">2.4M Views</div>
+          </div>
+          <div class="p-4">
+            <h3 class="font-display font-700 text-zinc-900 text-base mb-1">Viral TikTok CamilanNusantara</h3>
+            <p class="text-zinc-500 text-sm">Video jedag-jedug + voice over yang tembus 2,4 juta views organik.</p>
+          </div>
+        </article>
+
+        <article class="porto-card rounded-2xl overflow-hidden border border-zinc-100 bg-white shadow-sm cursor-pointer group" data-category="foto" tabindex="0" aria-label="Foto Produk Skincare - Foto">
+          <div class="aspect-video bg-gradient-to-br from-amber-50 to-orange-100 flex items-center justify-center relative overflow-hidden">
+            <div class="w-24 h-24 rounded-full bg-white/60 flex items-center justify-center backdrop-blur-sm">
+              <svg width="36" height="36" fill="none" viewBox="0 0 24 24" stroke="#D97706" stroke-width="1.5" aria-hidden="true"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/><circle cx="12" cy="13" r="4"/></svg>
+            </div>
+            <div class="absolute top-3 left-3">
+              <span class="px-2.5 py-1 rounded-full text-[11px] font-medium bg-white/80 text-amber-600 backdrop-blur-sm">Foto</span>
+            </div>
+          </div>
+          <div class="p-4">
+            <h3 class="font-display font-700 text-zinc-900 text-base mb-1">Foto Produk GlowSkinID</h3>
+            <p class="text-zinc-500 text-sm">Sesi foto produk skincare dengan konsep aesthetic minimalis untuk feed Instagram.</p>
+          </div>
+        </article>
+
+        <article class="porto-card rounded-2xl overflow-hidden border border-zinc-100 bg-white shadow-sm cursor-pointer group" data-category="sosmed" tabindex="0" aria-label="Kelola Sosmed WarbungKu - Sosmed">
+          <div class="aspect-video bg-gradient-to-br from-emerald-50 to-teal-100 flex items-center justify-center relative overflow-hidden">
+            <div class="w-24 h-24 rounded-2xl bg-white/60 flex items-center justify-center backdrop-blur-sm">
+              <svg width="36" height="36" fill="none" viewBox="0 0 24 24" stroke="#059669" stroke-width="1.5" aria-hidden="true"><path d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z"/></svg>
+            </div>
+            <div class="absolute top-3 left-3">
+              <span class="px-2.5 py-1 rounded-full text-[11px] font-medium bg-white/80 text-emerald-600 backdrop-blur-sm">Sosmed</span>
+            </div>
+            <div class="absolute bottom-3 right-3 bg-white/80 backdrop-blur-sm px-2 py-1 rounded-lg text-[11px] font-medium text-zinc-700">+12K Followers</div>
+          </div>
+          <div class="p-4">
+            <h3 class="font-display font-700 text-zinc-900 text-base mb-1">Kelola Sosmed WarbungKu</h3>
+            <p class="text-zinc-500 text-sm">Strategi konten + jadwal posting 3 bulan yang menumbuhkan 12K followers organik.</p>
+          </div>
+        </article>
+
+        <article class="porto-card rounded-2xl overflow-hidden border border-zinc-100 bg-white shadow-sm cursor-pointer group" data-category="desain" tabindex="0" aria-label="Poster Event MusiKita - Desain">
+          <div class="aspect-video bg-gradient-to-br from-violet/10 to-purple-100 flex items-center justify-center relative overflow-hidden">
+            <div class="w-24 h-24 rounded-2xl bg-white/60 flex items-center justify-center backdrop-blur-sm">
+              <svg width="36" height="36" fill="none" viewBox="0 0 24 24" stroke="#7C3AED" stroke-width="1.5" aria-hidden="true"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+            </div>
+            <div class="absolute top-3 left-3">
+              <span class="px-2.5 py-1 rounded-full text-[11px] font-medium bg-white/80 text-violet backdrop-blur-sm">Desain</span>
+            </div>
+          </div>
+          <div class="p-4">
+            <h3 class="font-display font-700 text-zinc-900 text-base mb-1">Poster Event MusiKita</h3>
+            <p class="text-zinc-500 text-sm">Rangkaian poster & story template untuk event musik indie lokal di Yogyakarta.</p>
+          </div>
+        </article>
+
+        <article class="porto-card rounded-2xl overflow-hidden border border-zinc-100 bg-white shadow-sm cursor-pointer group" data-category="video" tabindex="0" aria-label="Company Profile Video - Video">
+          <div class="aspect-video bg-gradient-to-br from-blue-50 to-sky-100 flex items-center justify-center relative overflow-hidden">
+            <div class="w-24 h-24 rounded-full bg-white/60 flex items-center justify-center backdrop-blur-sm">
+              <svg width="36" height="36" fill="none" viewBox="0 0 24 24" stroke="#0284C7" stroke-width="1.5" aria-hidden="true"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
+            </div>
+            <div class="absolute top-3 left-3">
+              <span class="px-2.5 py-1 rounded-full text-[11px] font-medium bg-white/80 text-sky-600 backdrop-blur-sm">Video</span>
+            </div>
+            <div class="absolute bottom-3 right-3 bg-white/80 backdrop-blur-sm px-2 py-1 rounded-lg text-[11px] font-medium text-zinc-700">2 menit</div>
+          </div>
+          <div class="p-4">
+            <h3 class="font-display font-700 text-zinc-900 text-base mb-1">Company Profile RumahPintar</h3>
+            <p class="text-zinc-500 text-sm">Video profil perusahaan 2 menit dengan motion graphics dan narasi profesional.</p>
+          </div>
+        </article>
+
+      </div>
+
+      <div class="text-center mt-10 fade-in">
+        <a href="#contact" class="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-zinc-200 text-zinc-700 text-sm font-medium hover:border-accent hover:text-accent hover:bg-accent/5 transition-colors focus-visible:ring-2 focus-visible:ring-accent focus:outline-none">
+          Lihat Semua Portfolio
+          <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       SERVICES SECTION
+  ============================================================ -->
+  <section id="services" class="py-20 sm:py-28 bg-zinc-50" aria-labelledby="services-heading">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-12 fade-in">
+        <p class="text-accent text-sm font-medium tracking-wide uppercase mb-3">Apa yang Bisa Aku Bantu</p>
+        <h2 id="services-heading" class="font-display font-800 text-3xl sm:text-4xl lg:text-5xl text-zinc-950 tracking-tight">Layanan Unggulan</h2>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 fade-in">
+        <!-- Service 1 -->
+        <div class="bg-white rounded-2xl p-6 border border-zinc-100 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300">
+          <div class="w-12 h-12 rounded-xl bg-accent/10 flex items-center justify-center mb-4" aria-hidden="true">
+            <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="#2563EB" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></svg>
+          </div>
+          <h3 class="font-display font-700 text-zinc-900 text-base mb-2">Desain Grafis</h3>
+          <p class="text-zinc-500 text-sm leading-relaxed">Logo, poster, feed IG, banner promo, dan semua kebutuhan visual brand-mu.</p>
+          <ul class="mt-3 space-y-1.5" aria-label="Detail layanan desain grafis">
+            <li class="flex items-center gap-2 text-xs text-zinc-500">
+              <svg class="text-accent w-3.5 h-3.5 shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+              Revisi unlimited (paket tertentu)
+            </li>
+            <li class="flex items-center gap-2 text-xs text-zinc-500">
+              <svg class="text-accent w-3.5 h-3.5 shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+              File master tersedia
+            </li>
+          </ul>
+        </div>
+
+        <!-- Service 2 -->
+        <div class="bg-white rounded-2xl p-6 border border-zinc-100 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300">
+          <div class="w-12 h-12 rounded-xl bg-violet/10 flex items-center justify-center mb-4" aria-hidden="true">
+            <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="#7C3AED" stroke-width="1.8"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
+          </div>
+          <h3 class="font-display font-700 text-zinc-900 text-base mb-2">Edit Video</h3>
+          <p class="text-zinc-500 text-sm leading-relaxed">TikTok jedag-jedug, Reels Instagram, YouTube Shorts, hingga company profile.</p>
+          <ul class="mt-3 space-y-1.5" aria-label="Detail layanan edit video">
+            <li class="flex items-center gap-2 text-xs text-zinc-500">
+              <svg class="text-violet w-3.5 h-3.5 shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+              CapCut & Premiere Pro
+            </li>
+            <li class="flex items-center gap-2 text-xs text-zinc-500">
+              <svg class="text-violet w-3.5 h-3.5 shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+              Subtitel & musik licensed
+            </li>
+          </ul>
+        </div>
+
+        <!-- Service 3 -->
+        <div class="bg-white rounded-2xl p-6 border border-zinc-100 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300">
+          <div class="w-12 h-12 rounded-xl bg-emerald-50 flex items-center justify-center mb-4" aria-hidden="true">
+            <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="#059669" stroke-width="1.8"><path d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z"/></svg>
+          </div>
+          <h3 class="font-display font-700 text-zinc-900 text-base mb-2">Manajemen Sosmed</h3>
+          <p class="text-zinc-500 text-sm leading-relaxed">Kelola akun Instagram, TikTok, dan Facebook mulai dari konten hingga engagement.</p>
+          <ul class="mt-3 space-y-1.5" aria-label="Detail layanan manajemen sosmed">
+            <li class="flex items-center gap-2 text-xs text-zinc-500">
+              <svg class="text-emerald-600 w-3.5 h-3.5 shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+              Content calendar 30 hari
+            </li>
+            <li class="flex items-center gap-2 text-xs text-zinc-500">
+              <svg class="text-emerald-600 w-3.5 h-3.5 shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+              Laporan analitik mingguan
+            </li>
+          </ul>
+        </div>
+
+        <!-- Service 4 -->
+        <div class="bg-white rounded-2xl p-6 border border-zinc-100 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300">
+          <div class="w-12 h-12 rounded-xl bg-amber-50 flex items-center justify-center mb-4" aria-hidden="true">
+            <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="#D97706" stroke-width="1.8"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/><circle cx="12" cy="13" r="4"/></svg>
+          </div>
+          <h3 class="font-display font-700 text-zinc-900 text-base mb-2">Fotografi Produk</h3>
+          <p class="text-zinc-500 text-sm leading-relaxed">Sesi foto on-location atau studio untuk produk, makanan, fashion, dan aksesoris.</p>
+          <ul class="mt-3 space-y-1.5" aria-label="Detail layanan fotografi">
+            <li class="flex items-center gap-2 text-xs text-zinc-500">
+              <svg class="text-amber-600 w-3.5 h-3.5 shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+              Editing & retouching inklusif
+            </li>
+            <li class="flex items-center gap-2 text-xs text-zinc-500">
+              <svg class="text-amber-600 w-3.5 h-3.5 shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+              Kirim file HR dalam 2x24 jam
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       PRICING SECTION
+  ============================================================ -->
+  <section id="pricing" class="py-20 sm:py-28 bg-white" aria-labelledby="pricing-heading">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-12 fade-in">
+        <p class="text-accent text-sm font-medium tracking-wide uppercase mb-3">Paket Layanan</p>
+        <h2 id="pricing-heading" class="font-display font-800 text-3xl sm:text-4xl lg:text-5xl text-zinc-950 tracking-tight mb-4">Pilih Paket<br />yang Cocok Buat Kamu</h2>
+        <p class="text-zinc-500 text-base max-w-lg mx-auto">Semua paket sudah termasuk konsultasi awal dan revisi. Tidak ada biaya tersembunyi.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 fade-in">
+
+        <!-- Starter -->
+        <div class="pkg-card bg-white border border-zinc-200 rounded-2xl p-6 flex flex-col">
+          <div class="mb-5">
+            <p class="text-xs font-medium text-zinc-400 uppercase tracking-wide mb-2">Starter</p>
+            <p class="font-display font-800 text-3xl text-zinc-950">Rp 150K</p>
+            <p class="text-zinc-500 text-sm mt-1">/ proyek</p>
+          </div>
+          <p class="text-zinc-500 text-sm mb-5 leading-relaxed">Cocok untuk kebutuhan desain satu kali pakai atau video pendek untuk keperluan personal.</p>
+          <ul class="space-y-2.5 mb-6 flex-1" aria-label="Fitur paket Starter">
+            <li class="flex items-start gap-2.5 text-sm text-zinc-700"><svg class="text-accent w-4 h-4 mt-0.5 shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>1 desain / 1 video ≤60 detik</li>
+            <li class="flex items-start gap-2.5 text-sm text-zinc-700"><svg class="text-accent w-4 h-4 mt-0.5 shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>2x revisi</li>
+            <li class="flex items-start gap-2.5 text-sm text-zinc-700"><svg class="text-accent w-4 h-4 mt-0.5 shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>Pengiriman 3-5 hari kerja</li>
+            <li class="flex items-start gap-2.5 text-sm text-zinc-400 line-through"><svg class="w-4 h-4 mt-0.5 shrink-0 opacity-40" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>File master (.ai / .psd)</li>
+            <li class="flex items-start gap-2.5 text-sm text-zinc-400 line-through"><svg class="w-4 h-4 mt-0.5 shrink-0 opacity-40" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>Konsultasi strategi</li>
+          </ul>
+          <button onclick="openModal('Starter')" class="w-full py-3 rounded-xl border border-zinc-200 text-zinc-700 text-sm font-medium hover:border-accent hover:text-accent hover:bg-accent/5 transition-colors focus-visible:ring-2 focus-visible:ring-accent focus:outline-none" aria-label="Pilih paket Starter">Pilih Starter</button>
+        </div>
+
+        <!-- Growth (Popular) -->
+        <div class="pkg-card popular rounded-2xl p-6 flex flex-col relative bg-white">
+          <div class="absolute -top-3 left-1/2 -translate-x-1/2">
+            <span class="px-3.5 py-1 rounded-full bg-accent text-white text-xs font-semibold shadow-md">⚡ Paling Laris</span>
+          </div>
+          <div class="mb-5 mt-3">
+            <p class="text-xs font-medium text-accent uppercase tracking-wide mb-2">Growth</p>
+            <div class="flex items-baseline gap-2">
+              <p class="font-display font-800 text-3xl text-zinc-950">Rp 450K</p>
+              <p class="text-zinc-400 text-sm line-through">Rp 650K</p>
+            </div>
+            <p class="text-zinc-500 text-sm mt-1">/ bulan</p>
+          </div>
+          <p class="text-zinc-500 text-sm mb-5 leading-relaxed">Ideal untuk UMKM dan brand lokal yang mau konsisten tampil di sosial media setiap minggu.</p>
+          <ul class="space-y-2.5 mb-6 flex-1" aria-label="Fitur paket Growth">
+            <li class="flex items-start gap-2.5 text-sm text-zinc-700"><svg class="text-accent w-4 h-4 mt-0.5 shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>8 desain feed + 4 story/bulan</li>
+            <li class="flex items-start gap-2.5 text-sm text-zinc-700"><svg class="text-accent w-4 h-4 mt-0.5 shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>2 video pendek ≤90 detik</li>
+            <li class="flex items-start gap-2.5 text-sm text-zinc-700"><svg class="text-accent w-4 h-4 mt-0.5 shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>Revisi unlimited</li>
+            <li class="flex items-start gap-2.5 text-sm text-zinc-700"><svg class="text-accent w-4 h-4 mt-0.5 shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>File master tersedia</li>
+            <li class="flex items-start gap-2.5 text-sm text-zinc-700"><svg class="text-accent w-4 h-4 mt-0.5 shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>Laporan insight bulanan</li>
+          </ul>
+          <button onclick="openModal('Growth')" class="w-full py-3 rounded-xl bg-accent text-white text-sm font-medium hover:bg-accent-dark transition-colors focus-visible:ring-2 focus-visible:ring-accent focus:outline-none" aria-label="Pilih paket Growth">Pilih Growth</button>
+        </div>
+
+        <!-- Pro -->
+        <div class="pkg-card bg-zinc-950 border border-zinc-800 rounded-2xl p-6 flex flex-col">
+          <div class="mb-5">
+            <p class="text-xs font-medium text-zinc-400 uppercase tracking-wide mb-2">Pro</p>
+            <div class="flex items-baseline gap-2">
+              <p class="font-display font-800 text-3xl text-white">Rp 900K</p>
+              <p class="text-zinc-500 text-sm line-through">Rp 1.2Jt</p>
+            </div>
+            <p class="text-zinc-400 text-sm mt-1">/ bulan</p>
+          </div>
+          <p class="text-zinc-400 text-sm mb-5 leading-relaxed">Untuk brand serius yang butuh full-service kreatif, termasuk strategi, konten, dan manajemen akun.</p>
+          <ul class="space-y-2.5 mb-6 flex-1" aria-label="Fitur paket Pro">
+            <li class="flex items-start gap-2.5 text-sm text-zinc-300"><svg class="text-accent w-4 h-4 mt-0.5 shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>20 desain feed + story unlimited</li>
+            <li class="flex items-start gap-2.5 text-sm text-zinc-300"><svg class="text-accent w-4 h-4 mt-0.5 shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>6 video konten per bulan</li>
+            <li class="flex items-start gap-2.5 text-sm text-zinc-300"><svg class="text-accent w-4 h-4 mt-0.5 shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>Manajemen akun penuh</li>
+            <li class="flex items-start gap-2.5 text-sm text-zinc-300"><svg class="text-accent w-4 h-4 mt-0.5 shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>Konsultasi strategi 2x/bulan</li>
+            <li class="flex items-start gap-2.5 text-sm text-zinc-300"><svg class="text-accent w-4 h-4 mt-0.5 shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>Prioritas pengerjaan & WA fast response</li>
+          </ul>
+          <button onclick="openModal('Pro')" class="w-full py-3 rounded-xl bg-white text-zinc-950 text-sm font-medium hover:bg-zinc-100 transition-colors focus-visible:ring-2 focus-visible:ring-white focus:outline-none" aria-label="Pilih paket Pro">Pilih Pro</button>
+        </div>
+
+      </div>
+
+      <!-- Custom Package Note -->
+      <div class="mt-8 text-center fade-in">
+        <p class="text-zinc-500 text-sm">Butuh paket khusus? <a href="#contact" class="text-accent font-medium underline underline-offset-2 hover:text-accent-dark focus-visible:outline-2 focus-visible:outline-accent">Hubungi aku untuk custom order →</a></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       TESTIMONIALS
+  ============================================================ -->
+  <section id="testimonials" class="py-20 sm:py-28 bg-zinc-50" aria-labelledby="testi-heading">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-12 fade-in">
+        <p class="text-accent text-sm font-medium tracking-wide uppercase mb-3">Kata Klien</p>
+        <h2 id="testi-heading" class="font-display font-800 text-3xl sm:text-4xl lg:text-5xl text-zinc-950 tracking-tight">Mereka Sudah<br />Merasakan Manfaatnya</h2>
+      </div>
+
+      <div class="testi-slider flex gap-4 overflow-x-auto pb-4 snap-x cursor-grab active:cursor-grabbing" role="list" aria-label="Ulasan klien" tabindex="0">
+
+        <article class="testi-card min-w-0 bg-white rounded-2xl p-6 border border-zinc-100 shadow-sm flex flex-col" role="listitem">
+          <div class="flex items-center gap-1 mb-3" role="img" aria-label="Rating 5 bintang">
+            <svg class="text-amber-400 w-4 h-4" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+            <svg class="text-amber-400 w-4 h-4" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+            <svg class="text-amber-400 w-4 h-4" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+            <svg class="text-amber-400 w-4 h-4" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+            <svg class="text-amber-400 w-4 h-4" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+          </div>
+          <blockquote class="text-zinc-700 text-sm leading-relaxed flex-1 mb-4">
+            Konten TikTok yang dibuatin udah viral 2 kali! Followers naik dari 3K ke 15K dalam sebulan. Worth banget, fast response juga.
+          </blockquote>
+          <div class="flex items-center gap-3">
+            <img src="https://api.dicebear.com/7.x/notionists/svg?seed=rina&backgroundColor=ffd5dc" alt="Foto Rina, pemilik olshop" class="w-9 h-9 rounded-full bg-zinc-100 object-cover" />
+            <div>
+              <p class="font-semibold text-zinc-800 text-sm">Rina Kusuma</p>
+              <p class="text-zinc-500 text-xs">Owner @rinastore.id</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="testi-card min-w-0 bg-white rounded-2xl p-6 border border-zinc-100 shadow-sm flex flex-col" role="listitem">
+          <div class="flex items-center gap-1 mb-3" role="img" aria-label="Rating 5 bintang">
+            <svg class="text-amber-400 w-4 h-4" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+            <svg class="text-amber-400 w-4 h-4" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+            <svg class="text-amber-400 w-4 h-4" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+            <svg class="text-amber-400 w-4 h-4" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+            <svg class="text-amber-400 w-4 h-4" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+          </div>
+          <blockquote class="text-zinc-700 text-sm leading-relaxed flex-1 mb-4">
+            Desain logonya keren banget, sesuai sama visi brand aku. Prosesnya gampang, tinggal briefing via WA dan hasilnya beyond expectation.
+          </blockquote>
+          <div class="flex items-center gap-3">
+            <img src="https://api.dicebear.com/7.x/notionists/svg?seed=dimas&backgroundColor=c1f0c1" alt="Foto Dimas, founder startup" class="w-9 h-9 rounded-full bg-zinc-100 object-cover" />
+            <div>
+              <p class="font-semibold text-zinc-800 text-sm">Dimas Pratama</p>
+              <p class="text-zinc-500 text-xs">Founder Startup Lokal</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="testi-card min-w-0 bg-white rounded-2xl p-6 border border-zinc-100 shadow-sm flex flex-col" role="listitem">
+          <div class="flex items-center gap-1 mb-3" role="img" aria-label="Rating 5 bintang">
+            <svg class="text-amber-400 w-4 h-4" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+            <svg class="text-amber-400 w-4 h-4" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+            <svg class="text-amber-400 w-4 h-4" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+            <svg class="text-amber-400 w-4 h-4" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+            <svg class="text-amber-400 w-4 h-4" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+          </div>
+          <blockquote class="text-zinc-700 text-sm leading-relaxed flex-1 mb-4">
+            Paket Growth beneran mengubah game. Engagement naik 3x lipat sejak pake jasa ini. Desainnya konsisten dan on-brand banget.
+          </blockquote>
+          <div class="flex items-center gap-3">
+            <img src="https://api.dicebear.com/7.x/notionists/svg?seed=sarah&backgroundColor=fde68a" alt="Foto Sarah, pengelola kafe" class="w-9 h-9 rounded-full bg-zinc-100 object-cover" />
+            <div>
+              <p class="font-semibold text-zinc-800 text-sm">Sarah Wijaya</p>
+              <p class="text-zinc-500 text-xs">Owner Café Cozy Bandung</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="testi-card min-w-0 bg-white rounded-2xl p-6 border border-zinc-100 shadow-sm flex flex-col" role="listitem">
+          <div class="flex items-center gap-1 mb-3" role="img" aria-label="Rating 5 bintang">
+            <svg class="text-amber-400 w-4 h-4" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+            <svg class="text-amber-400 w-4 h-4" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+            <svg class="text-amber-400 w-4 h-4" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+            <svg class="text-amber-400 w-4 h-4" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+            <svg class="text-amber-400 w-4 h-4" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+          </div>
+          <blockquote class="text-zinc-700 text-sm leading-relaxed flex-1 mb-4">
+            Edit video yang dibikin beneran jedag-jedug dan nangkep attention. Salah satu video tembus 500K views! Recommended banget.
+          </blockquote>
+          <div class="flex items-center gap-3">
+            <img src="https://api.dicebear.com/7.x/notionists/svg?seed=reza&backgroundColor=bfdbfe" alt="Foto Reza, content creator" class="w-9 h-9 rounded-full bg-zinc-100 object-cover" />
+            <div>
+              <p class="font-semibold text-zinc-800 text-sm">Reza Firmansyah</p>
+              <p class="text-zinc-500 text-xs">Content Creator TikTok</p>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       FAQ SECTION
+  ============================================================ -->
+  <section id="faq" class="py-20 sm:py-28 bg-white" aria-labelledby="faq-heading">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-12 fade-in">
+        <p class="text-accent text-sm font-medium tracking-wide uppercase mb-3">Pertanyaan Umum</p>
+        <h2 id="faq-heading" class="font-display font-800 text-3xl sm:text-4xl text-zinc-950 tracking-tight">Ada yang Mau<br />Kamu Tanyain?</h2>
+      </div>
+
+      <div class="space-y-3 fade-in" role="list" aria-label="Daftar pertanyaan umum">
+
+        <div class="faq-item border border-zinc-100 rounded-2xl bg-white overflow-hidden" role="listitem">
+          <button class="faq-trigger w-full flex items-center justify-between px-5 py-4 text-left font-display font-600 text-zinc-800 text-sm sm:text-base hover:bg-zinc-50 transition-colors focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-accent focus:outline-none" aria-expanded="false" aria-controls="faq-body-1">
+            <span>Bagaimana cara order dan prosesnya seperti apa?</span>
+            <svg class="faq-icon w-5 h-5 text-zinc-400 shrink-0 ml-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          </button>
+          <div class="faq-body px-5 text-sm text-zinc-500 leading-relaxed" id="faq-body-1" role="region">
+            Cukup klik tombol "Konsultasi Gratis" dan kamu akan diarahkan ke WhatsApp. Ceritakan kebutuhan kamu, paket yang diinginkan, dan timeline-nya. Setelah deal, kamu kirim brief atau referensi, lalu pengerjaan dimulai dalam 1x24 jam.
+          </div>
+        </div>
+
+        <div class="faq-item border border-zinc-100 rounded-2xl bg-white overflow-hidden" role="listitem">
+          <button class="faq-trigger w-full flex items-center justify-between px-5 py-4 text-left font-display font-600 text-zinc-800 text-sm sm:text-base hover:bg-zinc-50 transition-colors focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-accent focus:outline-none" aria-expanded="false" aria-controls="faq-body-2">
+            <span>Berapa lama waktu pengerjaan?</span>
+            <svg class="faq-icon w-5 h-5 text-zinc-400 shrink-0 ml-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          </button>
+          <div class="faq-body px-5 text-sm text-zinc-500 leading-relaxed" id="faq-body-2" role="region">
+            Tergantung jenis proyeknya. Desain feed/poster: 1-2 hari kerja. Edit video pendek (≤90 detik): 2-3 hari kerja. Paket bulanan: konten dijadwalkan dan dikirim sesuai calendar yang disepakati di awal bulan. Ada opsi express dengan tambahan biaya.
+          </div>
+        </div>
+
+        <div class="faq-item border border-zinc-100 rounded-2xl bg-white overflow-hidden" role="listitem">
+          <button class="faq-trigger w-full flex items-center justify-between px-5 py-4 text-left font-display font-600 text-zinc-800 text-sm sm:text-base hover:bg-zinc-50 transition-colors focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-accent focus:outline-none" aria-expanded="false" aria-controls="faq-body-3">
+            <span>Metode pembayaran apa saja yang tersedia?</span>
+            <svg class="faq-icon w-5 h-5 text-zinc-400 shrink-0 ml-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          </button>
+          <div class="faq-body px-5 text-sm text-zinc-500 leading-relaxed" id="faq-body-3" role="region">
+            Transfer bank (BCA, Mandiri, BRI), GoPay, OVO, DANA, dan QRIS. Untuk proyek satu kali: bayar 50% di awal, 50% setelah revisi final disetujui. Untuk paket bulanan: bayar di muka di awal bulan.
+          </div>
+        </div>
+
+        <div class="faq-item border border-zinc-100 rounded-2xl bg-white overflow-hidden" role="listitem">
+          <button class="faq-trigger w-full flex items-center justify-between px-5 py-4 text-left font-display font-600 text-zinc-800 text-sm sm:text-base hover:bg-zinc-50 transition-colors focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-accent focus:outline-none" aria-expanded="false" aria-controls="faq-body-4">
+            <span>Apakah bisa request revisi?</span>
+            <svg class="faq-icon w-5 h-5 text-zinc-400 shrink-0 ml-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          </button>
+          <div class="faq-body px-5 text-sm text-zinc-500 leading-relaxed" id="faq-body-4" role="region">
+            Tentu! Paket Starter: 2x revisi. Paket Growth: unlimited revisi selama dalam lingkup brief awal. Paket Pro: unlimited revisi termasuk perubahan konsep. Revisi di luar scope awal bisa dikenakan biaya tambahan yang sangat terjangkau.
+          </div>
+        </div>
+
+        <div class="faq-item border border-zinc-100 rounded-2xl bg-white overflow-hidden" role="listitem">
+          <button class="faq-trigger w-full flex items-center justify-between px-5 py-4 text-left font-display font-600 text-zinc-800 text-sm sm:text-base hover:bg-zinc-50 transition-colors focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-accent focus:outline-none" aria-expanded="false" aria-controls="faq-body-5">
+            <span>File apa saja yang akan aku terima?</span>
+            <svg class="faq-icon w-5 h-5 text-zinc-400 shrink-0 ml-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          </button>
+          <div class="faq-body px-5 text-sm text-zinc-500 leading-relaxed" id="faq-body-5" role="region">
+            Untuk desain: PNG/JPG resolusi tinggi + PDF (dan file master .ai/.psd untuk paket Growth & Pro). Untuk video: file MP4 resolusi 1080p atau 4K sesuai kebutuhan, sudah termasuk subtitle dan musik. Semua dikirim via Google Drive atau WeTransfer.
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       CONTACT / ORDER FORM SECTION
+  ============================================================ -->
+  <section id="contact" class="py-20 sm:py-28 bg-zinc-50" aria-labelledby="contact-heading">
+    <div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-10 fade-in">
+        <p class="text-accent text-sm font-medium tracking-wide uppercase mb-3">Mulai Sekarang</p>
+        <h2 id="contact-heading" class="font-display font-800 text-3xl sm:text-4xl text-zinc-950 tracking-tight mb-3">Ceritain Kebutuhanmu,<br />Aku Siap Bantu</h2>
+        <p class="text-zinc-500 text-sm">Isi form di bawah dan klik kirim — langsung tersambung ke WhatsApp.</p>
+      </div>
+
+      <div class="bg-white border border-zinc-100 rounded-3xl p-6 sm:p-8 shadow-sm fade-in">
+        <fieldset>
+          <legend class="sr-only">Form intake klien kreatif</legend>
+
+          <div class="grid sm:grid-cols-2 gap-5 mb-5">
+            <!-- Name -->
+            <div>
+              <label for="client-name" class="block text-sm font-medium text-zinc-700 mb-1.5">Nama / Brand <span class="text-red-500" aria-hidden="true">*</span></label>
+              <input type="text" id="client-name" name="client-name" placeholder="Contoh: Toko BungaKita" required
+                     class="w-full px-4 py-2.5 rounded-xl border border-zinc-200 text-sm text-zinc-800 placeholder:text-zinc-400 focus-visible:ring-2 focus-visible:ring-accent focus:outline-none focus:border-accent transition-colors"
+                     aria-required="true" aria-describedby="name-error" />
+              <p id="name-error" class="hidden text-xs text-red-500 mt-1" role="alert" aria-live="polite"></p>
+            </div>
+            <!-- WA Number -->
+            <div>
+              <label for="client-wa" class="block text-sm font-medium text-zinc-700 mb-1.5">No. WhatsApp <span class="text-red-500" aria-hidden="true">*</span></label>
+              <input type="tel" id="client-wa" name="client-wa" placeholder="08xx xxxx xxxx" required
+                     class="w-full px-4 py-2.5 rounded-xl border border-zinc-200 text-sm text-zinc-800 placeholder:text-zinc-400 focus-visible:ring-2 focus-visible:ring-accent focus:outline-none focus:border-accent transition-colors"
+                     aria-required="true" aria-describedby="wa-error" />
+              <p id="wa-error" class="hidden text-xs text-red-500 mt-1" role="alert" aria-live="polite"></p>
+            </div>
+          </div>
+
+          <!-- Service Select -->
+          <div class="mb-5">
+            <label for="service-select" class="block text-sm font-medium text-zinc-700 mb-1.5">Layanan yang Dibutuhkan <span class="text-red-500" aria-hidden="true">*</span></label>
+            <select id="service-select" name="service-select" required
+                    class="w-full px-4 py-2.5 rounded-xl border border-zinc-200 text-sm text-zinc-800 bg-white focus-visible:ring-2 focus-visible:ring-accent focus:outline-none focus:border-accent transition-colors"
+                    aria-required="true" aria-describedby="service-error">
+              <option value="" disabled selected>Pilih layanan...</option>
+              <option value="Desain Grafis">🎨 Desain Grafis</option>
+              <option value="Edit Video TikTok/Reels">🎬 Edit Video TikTok/Reels</option>
+              <option value="Manajemen Sosmed">📱 Manajemen Sosmed</option>
+              <option value="Fotografi Produk">📸 Fotografi Produk</option>
+              <option value="Paket Custom">⚙️ Paket Custom</option>
+            </select>
+            <p id="service-error" class="hidden text-xs text-red-500 mt-1" role="alert" aria-live="polite"></p>
+          </div>
+
+          <!-- Package Select -->
+          <div class="mb-5">
+            <label for="pkg-select" class="block text-sm font-medium text-zinc-700 mb-1.5">Paket yang Diminati</label>
+            <div class="flex gap-2 flex-wrap" role="radiogroup" aria-label="Pilih paket">
+              <label class="pkg-radio-label cursor-pointer">
+                <input type="radio" name="pkg-radio" value="Starter" class="sr-only" aria-label="Paket Starter" />
+                <span class="block px-4 py-2 rounded-xl border border-zinc-200 text-sm font-medium text-zinc-600 hover:border-accent hover:text-accent hover:bg-accent/5 transition-colors peer-checked:bg-accent peer-checked:text-white" id="pkg-starter-label">Starter</span>
+              </label>
+              <label class="pkg-radio-label cursor-pointer">
+                <input type="radio" name="pkg-radio" value="Growth" class="sr-only" aria-label="Paket Growth" />
+                <span class="block px-4 py-2 rounded-xl border border-zinc-200 text-sm font-medium text-zinc-600 hover:border-accent hover:text-accent hover:bg-accent/5 transition-colors" id="pkg-growth-label">Growth</span>
+              </label>
+              <label class="pkg-radio-label cursor-pointer">
+                <input type="radio" name="pkg-radio" value="Pro" class="sr-only" aria-label="Paket Pro" />
+                <span class="block px-4 py-2 rounded-xl border border-zinc-200 text-sm font-medium text-zinc-600 hover:border-accent hover:text-accent hover:bg-accent/5 transition-colors" id="pkg-pro-label">Pro</span>
+              </label>
+              <label class="pkg-radio-label cursor-pointer">
+                <input type="radio" name="pkg-radio" value="Custom / Belum Tahu" checked class="sr-only" aria-label="Custom atau belum tahu" />
+                <span class="block px-4 py-2 rounded-xl border border-accent bg-accent/10 text-accent text-sm font-medium" id="pkg-custom-label">Custom / Belum Tahu</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Detail Brief -->
+          <div class="mb-6">
+            <label for="brief-text" class="block text-sm font-medium text-zinc-700 mb-1.5">Brief Singkat</label>
+            <textarea id="brief-text" name="brief-text" rows="4"
+                      placeholder="Ceritakan kebutuhanmu: konsep, referensi, target audiens, atau deadline yang diharapkan..."
+                      class="w-full px-4 py-3 rounded-xl border border-zinc-200 text-sm text-zinc-800 placeholder:text-zinc-400 resize-none focus-visible:ring-2 focus-visible:ring-accent focus:outline-none focus:border-accent transition-colors leading-relaxed"></textarea>
+          </div>
+
+          <!-- Submit Button -->
+          <button type="button" id="send-wa-btn"
+                  class="w-full flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-xl bg-accent text-white font-medium text-sm hover:bg-accent-dark transition-colors focus-visible:ring-2 focus-visible:ring-accent focus:outline-none"
+                  aria-label="Kirim form dan buka WhatsApp">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+            </svg>
+            Kirim ke WhatsApp
+          </button>
+          <p class="text-center text-xs text-zinc-400 mt-3">Akan diarahkan ke WhatsApp · Gratis konsultasi awal</p>
+        </fieldset>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       FOOTER
+  ============================================================ -->
+  <footer class="border-t border-zinc-100 bg-white py-10 px-4" role="contentinfo">
+    <div class="max-w-6xl mx-auto">
+      <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+        <div class="flex items-center gap-3">
+          <span class="font-display font-800 text-lg text-zinc-950">KREASI<span class="text-accent">.CO</span></span>
+          <span class="text-zinc-300">·</span>
+          <span class="text-xs text-zinc-400">Jasa Kreatif Digital Premium</span>
+        </div>
+        <nav aria-label="Tautan footer">
+          <ul class="flex flex-wrap items-center justify-center gap-6 text-sm text-zinc-500" role="list">
+            <li><a href="#portfolio" class="hover:text-zinc-800 transition-colors focus-visible:outline-2 focus-visible:outline-accent">Portfolio</a></li>
+            <li><a href="#pricing" class="hover:text-zinc-800 transition-colors focus-visible:outline-2 focus-visible:outline-accent">Harga</a></li>
+            <li><a href="#faq" class="hover:text-zinc-800 transition-colors focus-visible:outline-2 focus-visible:outline-accent">FAQ</a></li>
+            <li>
+              <a href="https://wa.me/6281234567890" target="_blank" rel="noopener noreferrer"
+                 class="flex items-center gap-1.5 text-emerald-600 font-medium hover:text-emerald-700 transition-colors focus-visible:outline-2 focus-visible:outline-accent"
+                 aria-label="Hubungi via WhatsApp (tautan baru)">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+                WhatsApp
+              </a>
+            </li>
+          </ul>
+        </nav>
+        <p class="text-xs text-zinc-400">© 2024 KREASI.CO · Dibuat dengan ❤️ di Indonesia</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ============================================================
+       BOTTOM FLOATING CTA (Mobile)
+  ============================================================ -->
+  <div id="bottom-cta" class="hidden-bar fixed bottom-0 left-0 right-0 z-40 md:hidden" aria-live="polite">
+    <div class="bg-white border-t border-zinc-100 shadow-2xl px-4 py-3 flex items-center gap-3">
+      <div class="flex-1 min-w-0">
+        <p class="text-xs font-semibold text-zinc-800 truncate">Tersisa <span id="slot-count-bottom">4</span> slot bulan ini</p>
+        <p class="text-[11px] text-zinc-500 truncate">Konsultasi gratis, tanpa ribet</p>
+      </div>
+      <a href="#contact"
+         class="shrink-0 flex items-center gap-2 px-4 py-2.5 rounded-full bg-accent text-white text-sm font-medium hover:bg-accent-dark transition-colors focus-visible:ring-2 focus-visible:ring-accent focus:outline-none"
+         aria-label="Order sekarang via WhatsApp">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+        Order
+      </a>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       INTAKE MODAL
+  ============================================================ -->
+  <div id="intake-modal" class="hidden fixed inset-0 z-60 flex items-end sm:items-center justify-center" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="absolute inset-0 bg-zinc-950/40 backdrop-blur-sm" id="modal-overlay" tabindex="-1"></div>
+    <div id="modal-box" class="relative z-10 w-full max-w-md bg-white rounded-t-3xl sm:rounded-2xl p-6 sm:p-7 shadow-2xl mx-0 sm:mx-4">
+      <div class="flex items-center justify-between mb-5">
+        <h3 id="modal-title" class="font-display font-700 text-zinc-900 text-lg">Pesan Paket <span id="modal-pkg-name" class="text-accent"></span></h3>
+        <button id="close-modal" class="p-1.5 rounded-lg hover:bg-zinc-100 transition-colors focus-visible:ring-2 focus-visible:ring-accent focus:outline-none" aria-label="Tutup modal">
+          <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+
+      <div class="space-y-4 mb-5">
+        <div>
+          <label for="modal-name" class="block text-sm font-medium text-zinc-700 mb-1.5">Nama / Brand</label>
+          <input type="text" id="modal-name" placeholder="Nama kamu atau brand-mu" class="w-full px-4 py-2.5 rounded-xl border border-zinc-200 text-sm focus-visible:ring-2 focus-visible:ring-accent focus:outline-none focus:border-accent transition-colors" />
+        </div>
+        <div>
+          <label for="modal-wa" class="block text-sm font-medium text-zinc-700 mb-1.5">No. WhatsApp</label>
+          <input type="tel" id="modal-wa" placeholder="08xx xxxx xxxx" class="w-full px-4 py-2.5 rounded-xl border border-zinc-200 text-sm focus-visible:ring-2 focus-visible:ring-accent focus:outline-none focus:border-accent transition-colors" />
+        </div>
+        <div>
+          <label for="modal-notes" class="block text-sm font-medium text-zinc-700 mb-1.5">Catatan singkat (opsional)</label>
+          <textarea id="modal-notes" rows="3" placeholder="Brief singkat atau pertanyaan..." class="w-full px-4 py-3 rounded-xl border border-zinc-200 text-sm resize-none focus-visible:ring-2 focus-visible:ring-accent focus:outline-none focus:border-accent transition-colors"></textarea>
+        </div>
+      </div>
+
+      <button id="modal-send-btn" class="w-full flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-xl bg-accent text-white font-medium text-sm hover:bg-accent-dark transition-colors focus-visible:ring-2 focus-visible:ring-accent focus:outline-none">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+        Lanjut ke WhatsApp
+      </button>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       JAVASCRIPT ENGINE
+  ============================================================ -->
+  <script>
+    /* ========================================================
+       CONFIG — GANTI NOMOR WA DAN NAMA KREATOR DI SINI
+    ======================================================== */
+    const WA_NUMBER   = '6281234567890'; // Nomor WA tanpa + dan spasi
+    const CREATOR_NAME = 'Hana Kreasi';
+
+    /* ========================================================
+       MOBILE MENU TOGGLE
+    ======================================================== */
+    const menuBtn   = document.getElementById('menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const iconOpen  = document.getElementById('icon-open');
+    const iconClose = document.getElementById('icon-close');
+
+    menuBtn.addEventListener('click', () => {
+      const isOpen = !mobileMenu.classList.contains('hidden');
+      mobileMenu.classList.toggle('hidden', isOpen);
+      iconOpen.classList.toggle('hidden', !isOpen);
+      iconClose.classList.toggle('hidden', isOpen);
+      menuBtn.setAttribute('aria-expanded', String(!isOpen));
+    });
+
+    // Close menu on nav link click
+    mobileMenu.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        mobileMenu.classList.add('hidden');
+        iconOpen.classList.remove('hidden');
+        iconClose.classList.add('hidden');
+        menuBtn.setAttribute('aria-expanded', 'false');
+      });
+    });
+
+    /* ========================================================
+       PORTFOLIO TAB FILTER
+    ======================================================== */
+    const tabBtns   = document.querySelectorAll('.tab-btn');
+    const portoCards = document.querySelectorAll('#porto-grid [data-category]');
+
+    tabBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const tab = btn.dataset.tab;
+
+        tabBtns.forEach(b => {
+          b.classList.remove('active');
+          b.setAttribute('aria-selected', 'false');
+        });
+        btn.classList.add('active');
+        btn.setAttribute('aria-selected', 'true');
+
+        portoCards.forEach(card => {
+          if (tab === 'semua' || card.dataset.category === tab) {
+            card.style.display = '';
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(12px)';
+            requestAnimationFrame(() => {
+              card.style.transition = 'opacity 0.28s ease, transform 0.28s ease';
+              card.style.opacity = '1';
+              card.style.transform = 'none';
+            });
+          } else {
+            card.style.display = 'none';
+          }
+        });
+      });
+    });
+
+    /* ========================================================
+       FAQ ACCORDION
+    ======================================================== */
+    document.querySelectorAll('.faq-trigger').forEach(trigger => {
+      trigger.addEventListener('click', () => {
+        const item = trigger.closest('.faq-item');
+        const body = item.querySelector('.faq-body');
+        const isOpen = item.classList.contains('open');
+
+        // Close all
+        document.querySelectorAll('.faq-item').forEach(i => {
+          i.classList.remove('open');
+          i.querySelector('.faq-body').classList.remove('open');
+          i.querySelector('.faq-trigger').setAttribute('aria-expanded', 'false');
+        });
+
+        // Toggle current
+        if (!isOpen) {
+          item.classList.add('open');
+          body.classList.add('open');
+          trigger.setAttribute('aria-expanded', 'true');
+        }
+      });
+
+      // Keyboard support
+      trigger.addEventListener('keydown', e => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          trigger.click();
+        }
+      });
+    });
+
+    /* ========================================================
+       PACKAGE RADIO STYLING
+    ======================================================== */
+    document.querySelectorAll('.pkg-radio-label input[type="radio"]').forEach(radio => {
+      radio.addEventListener('change', () => {
+        document.querySelectorAll('.pkg-radio-label span').forEach(span => {
+          span.className = 'block px-4 py-2 rounded-xl border border-zinc-200 text-sm font-medium text-zinc-600 hover:border-accent hover:text-accent hover:bg-accent/5 transition-colors';
+        });
+        const label = radio.parentElement.querySelector('span');
+        label.className = 'block px-4 py-2 rounded-xl border border-accent bg-accent/10 text-accent text-sm font-medium transition-colors';
+      });
+    });
+
+    /* ========================================================
+       WHATSAPP MESSAGE BUILDER (Main Form)
+    ======================================================== */
+    document.getElementById('send-wa-btn').addEventListener('click', () => {
+      const nameField    = document.getElementById('client-name');
+      const waField      = document.getElementById('client-wa');
+      const serviceField = document.getElementById('service-select');
+      const pkgRadio     = document.querySelector('input[name="pkg-radio"]:checked');
+      const briefField   = document.getElementById('brief-text');
+
+      let hasError = false;
+
+      function showError(fieldId, errId, msg) {
+        const field = document.getElementById(fieldId);
+        const err   = document.getElementById(errId);
+        field.setAttribute('aria-invalid', 'true');
+        err.textContent = msg;
+        err.classList.remove('hidden');
+        hasError = true;
+      }
+      function clearError(fieldId, errId) {
+        const field = document.getElementById(fieldId);
+        const err   = document.getElementById(errId);
+        field.setAttribute('aria-invalid', 'false');
+        err.classList.add('hidden');
+      }
+
+      clearError('client-name', 'name-error');
+      clearError('client-wa', 'wa-error');
+      clearError('service-select', 'service-error');
+
+      if (!nameField.value.trim()) showError('client-name', 'name-error', 'Nama / brand wajib diisi.');
+      if (!waField.value.trim())   showError('client-wa', 'wa-error', 'Nomor WhatsApp wajib diisi.');
+      if (!serviceField.value)     showError('service-select', 'service-error', 'Pilih layanan yang dibutuhkan.');
+
+      if (hasError) return;
+
+      const pkg   = pkgRadio ? pkgRadio.value : 'Belum Tahu';
+      const brief = briefField.value.trim() || '-';
+
+      const msg = `Halo ${CREATOR_NAME}! 👋\n\nSaya tertarik dengan jasa kreatif kamu.\n\n*Nama/Brand:* ${nameField.value.trim()}\n*No. WA:* ${waField.value.trim()}\n*Layanan:* ${serviceField.value}\n*Paket:* ${pkg}\n*Brief:* ${brief}\n\nBisa dibantu?`;
+
+      window.open(`https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(msg)}`, '_blank', 'noopener,noreferrer');
+    });
+
+    /* ========================================================
+       MODAL OPEN/CLOSE (Pricing Cards)
+    ======================================================== */
+    const modal       = document.getElementById('intake-modal');
+    const modalBox    = document.getElementById('modal-box');
+    const closeModal  = document.getElementById('close-modal');
+    const modalOverlay = document.getElementById('modal-overlay');
+    const modalPkgName = document.getElementById('modal-pkg-name');
+    let lastFocused = null;
+
+    function openModal(pkgName) {
+      lastFocused = document.activeElement;
+      modalPkgName.textContent = pkgName;
+      modal.classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+      setTimeout(() => closeModal.focus(), 50);
+    }
+
+    function closeModalFn() {
+      modal.classList.add('hidden');
+      document.body.style.overflow = '';
+      if (lastFocused) lastFocused.focus();
+    }
+
+    closeModal.addEventListener('click', closeModalFn);
+    modalOverlay.addEventListener('click', closeModalFn);
+
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape' && !modal.classList.contains('hidden')) closeModalFn();
+    });
+
+    // Trap focus inside modal
+    modal.addEventListener('keydown', e => {
+      if (e.key !== 'Tab') return;
+      const focusable = modal.querySelectorAll('button, input, textarea, [tabindex]:not([tabindex="-1"])');
+      const first = focusable[0];
+      const last  = focusable[focusable.length - 1];
+      if (e.shiftKey) {
+        if (document.activeElement === first) { e.preventDefault(); last.focus(); }
+      } else {
+        if (document.activeElement === last) { e.preventDefault(); first.focus(); }
+      }
+    });
+
+    /* ========================================================
+       MODAL WA SEND
+    ======================================================== */
+    document.getElementById('modal-send-btn').addEventListener('click', () => {
+      const name  = document.getElementById('modal-name').value.trim();
+      const wa    = document.getElementById('modal-wa').value.trim();
+      const pkg   = modalPkgName.textContent;
+      const notes = document.getElementById('modal-notes').value.trim() || '-';
+
+      const msg = `Halo ${CREATOR_NAME}! 👋\n\nSaya mau order Paket *${pkg}*.\n\n*Nama/Brand:* ${name || 'Belum diisi'}\n*No. WA:* ${wa || 'Belum diisi'}\n*Catatan:* ${notes}\n\nBisa diproses?`;
+
+      window.open(`https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(msg)}`, '_blank', 'noopener,noreferrer');
+    });
+
+    /* ========================================================
+       COUNTDOWN TIMER
+    ======================================================== */
+    function updateCountdown() {
+      const now   = new Date();
+      const end   = new Date(now);
+      end.setHours(23, 59, 59, 999);
+      const diff  = end - now;
+
+      const h = Math.floor(diff / 3600000);
+      const m = Math.floor((diff % 3600000) / 60000);
+      const s = Math.floor((diff % 60000) / 1000);
+
+      document.getElementById('cd-hours').textContent = String(h).padStart(2, '0');
+      document.getElementById('cd-mins').textContent  = String(m).padStart(2, '0');
+      document.getElementById('cd-secs').textContent  = String(s).padStart(2, '0');
+    }
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+
+    /* ========================================================
+       SLOT AVAILABILITY LIVE TRACKER
+    ======================================================== */
+    let slotCount = 4;
+    const slotEl        = document.getElementById('slot-count');
+    const slotElBottom  = document.getElementById('slot-count-bottom');
+    const slotBadgeEl   = document.getElementById('slot-badge');
+
+    setInterval(() => {
+      // Randomly decrease slot count over time to simulate real-time activity
+      if (Math.random() < 0.07 && slotCount > 1) {
+        slotCount--;
+        slotEl.textContent       = slotCount;
+        slotElBottom.textContent = slotCount;
+        slotBadgeEl.innerHTML    = `Tersisa <strong>${slotCount}</strong> Slot Desember 2024`;
+      }
+    }, 8000);
+
+    /* ========================================================
+       BOTTOM CTA BAR — SCROLL TRIGGER
+    ======================================================== */
+    const bottomCta  = document.getElementById('bottom-cta');
+    const heroSection = document.getElementById('hero');
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        bottomCta.classList.toggle('hidden-bar', entry.isIntersecting);
+      });
+    }, { threshold: 0.15 });
+    observer.observe(heroSection);
+
+    /* ========================================================
+       FADE-IN ON SCROLL
+    ======================================================== */
+    const fadeEls = document.querySelectorAll('.fade-in');
+    const fadeObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          fadeObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    fadeEls.forEach(el => fadeObserver.observe(el));
+
+    /* ========================================================
+       TESTIMONIAL SLIDER — DRAG SCROLL
+    ======================================================== */
+    const slider = document.querySelector('.testi-slider');
+    let isDown  = false;
+    let startX  = 0;
+    let scrollLeft = 0;
+
+    slider.addEventListener('mousedown', e => {
+      isDown = true;
+      slider.style.cursor = 'grabbing';
+      startX    = e.pageX - slider.offsetLeft;
+      scrollLeft = slider.scrollLeft;
+    });
+    slider.addEventListener('mouseleave', () => { isDown = false; slider.style.cursor = 'grab'; });
+    slider.addEventListener('mouseup',    () => { isDown = false; slider.style.cursor = 'grab'; });
+    slider.addEventListener('mousemove',  e => {
+      if (!isDown) return;
+      e.preventDefault();
+      const x    = e.pageX - slider.offsetLeft;
+      const walk = (x - startX) * 1.4;
+      slider.scrollLeft = scrollLeft - walk;
+    });
+
+    /* ========================================================
+       SMOOTH SCROLL FOR ANCHOR LINKS
+    ======================================================== */
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', e => {
+        const target = document.querySelector(anchor.getAttribute('href'));
+        if (!target) return;
+        e.preventDefault();
+        const offset = 72;
+        const top    = target.getBoundingClientRect().top + window.scrollY - offset;
+        window.scrollTo({ top, behavior: 'smooth' });
+      });
+    });
+
+    /* ========================================================
+       NAVBAR SCROLL SHADOW
+    ======================================================== */
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      navbar.classList.toggle('shadow-sm', window.scrollY > 10);
+    }, { passive: true });
+  </script>
+
+</body>
+</html>
